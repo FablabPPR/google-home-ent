@@ -1,0 +1,13 @@
+{
+  "name": "google-home-ent",
+  "version": "1.0.0",
+  "description": "Programme pour pouvoir demander a un google assistant les devoirs ecrits sur la platforme web ent oze",
+  "main": "index.js",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "html-to-text": "^5.1.1",
+    "puppeteer": "^2.1.1"
+  },
+  "author": "Heorty",
+  "license": "MIT"
+}
