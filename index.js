@@ -18,15 +18,9 @@ const config = JSON.parse(data);
 
     await Promise.all([page.goto('https://ent.colleges-isere.fr/my.policy'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
 
-    await Promise.all([page.click('#interaction_table > tbody > tr:nth-child(2) > td > a'), page.waitForNavigation({ waitUntil: 'networkidle2' })]).catch(() => {
-        (async () => {
-            await Promise.all([page.click('https://ent.colleges-isere.fr/my.policy'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
-        })
-    })
+    await Promise.all([page.click('#interaction_table > tbody > tr:nth-child(2) > td > a'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
 
     await page.click('#imgEleveParent')
-
-    await page.screenshot({path: 'buddy-screenshot.png'});
 
     await Promise.all([page.click('#SubmitCreds'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
 
@@ -49,9 +43,6 @@ const config = JSON.parse(data);
     await Promise.all([page.click('#bouton_connexion'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
     await browser.close();
 
-    JSON.stringify(devoirs)
-    fs.writeFileSync('./data.json', JSON.stringify(devoirs))
-
 
 
     let str
@@ -64,17 +55,19 @@ const config = JSON.parse(data);
     while (nb > -1) {
 
         if (devoirs.listJours[nb]) {
+            
             console.log(devoirs.listJours[nb].date)
+            for (let i = 0; devoirs.listJours[nb].listTravail[i]; i++) {
+                str = JSON.stringify(devoirs.listJours[nb].listTravail[i].matiere)
+                str = suppre(str)
 
-            for (let i = 0; devoirs.listJours[i]; i++) {
-                str = JSON.stringify(devoirs.listJours[i].listTravail[0].matiere)
+                console.log(str)
+                devoirs.listJours[nb].listTravail[i].matiere = str
+
+                str = JSON.stringify(devoirs.listJours[nb].listTravail[i].description)
                 str = suppre(str)
                 console.log(str)
-
-                str = JSON.stringify(devoirs.listJours[i].listTravail[0].description)
-                str = suppre(str)
-                console.log(str)
-
+                devoirs.listJours[nb].listTravail[i].description = str
             }
 
 
@@ -84,6 +77,8 @@ const config = JSON.parse(data);
         }
         nb = nb - 1;
     }
+    JSON.stringify(devoirs)
+    fs.writeFileSync('./data.json', JSON.stringify(devoirs))
 
 })()
 
