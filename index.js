@@ -18,9 +18,15 @@ const config = JSON.parse(data);
 
     await Promise.all([page.goto('https://ent.colleges-isere.fr/my.policy'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
 
-    await Promise.all([page.click('#interaction_table > tbody > tr:nth-child(2) > td > a'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
+    await Promise.all([page.click('#interaction_table > tbody > tr:nth-child(2) > td > a'), page.waitForNavigation({ waitUntil: 'networkidle2' })]).catch(() => {
+        (async () => {
+            await Promise.all([page.click('https://ent.colleges-isere.fr/my.policy'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
+        })
+    })
 
     await page.click('#imgEleveParent')
+
+    await page.screenshot({path: 'buddy-screenshot.png'});
 
     await Promise.all([page.click('#SubmitCreds'), page.waitForNavigation({ waitUntil: 'networkidle2' })])
 
@@ -30,7 +36,7 @@ const config = JSON.parse(data);
     let password = config.password
 
     await page.type('#user', user);
-    await page.type('#password',password);
+    await page.type('#password', password);
 
     let devoirs
 
@@ -60,13 +66,18 @@ const config = JSON.parse(data);
         if (devoirs.listJours[nb]) {
             console.log(devoirs.listJours[nb].date)
 
-            str = JSON.stringify(devoirs.listJours[nb].listTravail[0].matiere)
-            str = suppre(str)
-            console.log(str)
+            for (let i = 0; devoirs.listJours[i]; i++) {
+                str = JSON.stringify(devoirs.listJours[i].listTravail[0].matiere)
+                str = suppre(str)
+                console.log(str)
 
-            str = JSON.stringify(devoirs.listJours[nb].listTravail[0].description)
-            str = suppre(str)
-            console.log(str)
+                str = JSON.stringify(devoirs.listJours[i].listTravail[0].description)
+                str = suppre(str)
+                console.log(str)
+
+            }
+
+
 
 
 
