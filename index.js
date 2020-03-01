@@ -5,6 +5,9 @@ const htmlToText = require('html-to-text');
 const data = fs.readFileSync('config.json');
 const config = JSON.parse(data);
 
+const {   dialogflow ,   actionssdk , Image , Table , Carousel , } = require ( 'actions-on-google' );
+const app = dialogflow();
+
 
 
 
